@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Виробнича лінія</title>
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+
+<div id="header">
+    <button id="sendMessage">Відправити повідомлення розробнику</button>
+    <button id="home">Головна</button>
+    <button id="production">Виробництво</button>
+    <button id="stoppage">Простої</button>
+    <button id="machines">Обладнання</button>
+    <button id="products">Продукти</button>
+    <button id="charts">Графіки</button>
+    <button id="reports">Звіти</button>
+    <button id="info">Про проект</button>
+    <div id="logout">Logout</div>
+</div>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Відправити повідомлення розробнику</h2>
+        <textarea id="messageInput" rows="4" cols="50"></textarea><br><br>
+        <button id="sendBtn">Відправити</button>
+        <button id="cancelBtn">Відмінити</button>
+    </div>
+</div>
+
+<div id="content">
+    <button id="base-stoppage">Керувати базовими типами простоїв</button>
+    <button id="sub-stoppage">Керувати підтипами простоїв</button>
+    <h1 id="page-title">Простої</h1>
+
+    <div id="choose-stoppage-form">
+        <h2>Фільтрування простоїв за параметрами</h2>
+        <select id="machine-name" placeholder="Вибір машини"></select>
+        <select id="product-name" placeholder="Вибір продукту"></select>
+        <select id="base-type-name" placeholder="Вибір базового типу"></select>
+        <select id="sub-type-name" placeholder="Вибір підтипу"></select>
+        <button id="find-stoppage">Показати простої</button>
+    </div>
+
+    <div>
+        <label for="datepicker-start">Оберіть дату від:</label>
+        <input type="date" id="datepicker-start" name="datepicker">
+
+        <label for="timepicker-start">Оберіть час від:</label>
+        <input type="time" id="timepicker-start" name="timepicker">
+    </div>
+
+    <div>
+        <label for="datepicker-end">Оберіть дату до:</label>
+        <input type="date" id="datepicker-end" name="datepicker">
+
+        <label for="timepicker-start">Оберіть час до:</label>
+        <input type="time" id="timepicker-end" name="timepicker">
+    </div>
+
+    <div id="duration-list">
+        <div>
+            <label for="days-start">Оберіть тривалість від:</label>
+            <input type="number" id="days-start" name="days-start" placeholder="Д">
+            <input type="number" id="hours-start" name="hours-start" placeholder="ч">
+            <input type="number" id="minutes-start" name="minutes-start" placeholder="мин">
+            <input type="number" id="seconds-start" name="seconds-start" placeholder="сек">
+        </div>
+
+        <div>
+            <label for="days-end">Оберіть тривалість до:</label>
+            <input type="number" id="days-end" name="days-end" placeholder="Д">
+            <input type="number" id="hours-end" name="hours-end" placeholder="ч">
+            <input type="number" id="minutes-end" name="minutes-end" placeholder="мин">
+            <input type="number" id="seconds-end" name="seconds-end" placeholder="сек">
+        </div>
+    </div>
+    <div>
+        <label for="stoppagesOnPage">Кількість простоїв на сторінці:</label>
+        <input type="number" id="stoppagesOnPage" name="stoppages-on-page" placeholder="Кількість простоїв на сторінці">
+    </div>
+
+    <div>
+        <h4>Групування простоїв за параметром</h4>
+        <select id="group-by-parameter">
+            <option value="productName">Ім'я продукта</option>
+            <option value="machineName">Ім'я машини</option>
+            <option value="baseTypeStoppageName">Ім'я базового типу простою</option>
+            <option value="subTypeStoppageName">Ім'я підтипу простою</option>
+        </select>
+        <button id="showDiagram">Показати графік</button>
+    </div>
+
+    <div id="stoppage-list">
+        <h2>Перелік простоїв</h2>
+        <ul id="stoppage-list-container"></ul>
+
+        <!-- Кнопка "Первая страница" -->
+        <button id="firstPage">Первая страница</button>
+
+        <!-- Кнопка "Предыдущая страница" -->
+        <button id="prevPage">Предыдущая страница</button>
+
+        <!-- Номер текущей страницы -->
+        <span id="currentPage">1</span>
+
+        <!-- Кнопка "Следующая страница" -->
+        <button id="nextPage">Следующая страница</button>
+
+        <!-- Кнопка "Последняя страница" -->
+        <button id="lastPage">Последняя страница</button>
+    </div>
+</div>
+
+<canvas id="barChart"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/stoppage.js"></script>
+
+</body>
+</html>

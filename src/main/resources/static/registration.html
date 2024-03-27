@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/registration.js"></script>
+</head>
+<body>
+
+<h2>Registration</h2>
+
+<form id="registrationForm">
+    <label for="firstName">First Name:</label><br>
+    <input type="text" id="firstName" name="firstName"><br>
+    <div id="firstNameError" style="color: red;"></div><br> <!-- Добавлено для отображения ошибки -->
+    <label for="lastName">Last Name:</label><br>
+    <input type="text" id="lastName" name="lastName"><br>
+    <div id="lastNameError" style="color: red;"></div><br> <!-- Добавлено для отображения ошибки -->
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br>
+    <div id="emailError" style="color: red;"></div><br> <!-- Добавлено для отображения ошибки -->
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br>
+    <div id="passwordError" style="color: red;"></div><br> <!-- Добавлено для отображения ошибки -->
+    <button type="button" id="registerButton">Register</button> <!-- Используем type="button", чтобы предотвратить отправку формы по умолчанию -->
+</form>
+</body>
+</html>

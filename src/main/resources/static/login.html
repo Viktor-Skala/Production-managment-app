@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/login.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="message">
+        <h2>Welcome to my Application</h2>
+        <p>This application provides various features and functionalities for different roles:</p>
+        <ul>
+            <li>Workers can use the application with the following credentials:</li>
+            <div class="credentials">
+                <p>Email: <span class="highlight">worker@ua.com</span></p>
+                <p>Password: <span class="highlight">111111</span></p>
+            </div>
+            <li>Engineers can use the application with the following credentials:</li>
+            <div class="credentials">
+                <p>Email: <span class="highlight">engineer@ua.com</span></p>
+                <p>Password: <span class="highlight">222222</span></p>
+            </div>
+            <li>To utilize all features, we recommend signing in via Google to access administrator privileges.</li>
+        </ul>
+    </div>
+    <form id="loginForm">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <div id="usernameError" style="color: red;"></div><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <div id="passwordError" style="color: red;"></div><br>
+        <button type="button" id="loginButton">Login</button>
+        <button type="button" id="registerButton">Register</button>
+    </form>
+
+    <button id="googleSignInBtn">Sign in with Google</button>
+    <button class="welcome-button" onclick="location.href='/welcome.html'">To Welcome Page</button>
+</div>
+</body>
+</html>

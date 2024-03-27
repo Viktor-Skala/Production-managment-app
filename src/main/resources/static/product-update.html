@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Производственная линия</title>
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+
+<div id="header">
+    <button id="sendMessage">Відправити повідомлення розробнику</button>
+    <button id="home">Головна</button>
+    <button id="production">Виробництво</button>
+    <button id="stoppage">Простої</button>
+    <button id="machines">Обладнання</button>
+    <button id="products">Продукти</button>
+    <button id="charts">Графіки</button>
+    <button id="reports">Звіти</button>
+    <button id="info">Про проект</button>
+    <div id="logout">Logout</div>
+</div>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Відправити повідомлення розробнику</h2>
+        <textarea id="messageInput" rows="4" cols="50"></textarea><br><br>
+        <button id="sendBtn">Відправити</button>
+        <button id="cancelBtn">Відмінити</button>
+    </div>
+</div>
+
+<div id="content">
+    <h1 id="page-title">Продукты</h1>
+
+    <div id="edit-product-form">
+        <h2>Редагувати продукт</h2>
+
+        <label for="product-name">Назва продукта:</label>
+        <input type="text" id="product-name" placeholder="Назва продукта">
+
+        <label for="machine-name">Назва машини:</label>
+        <input type="text" id="machine-name" placeholder="Назва машини" readonly>
+
+        <label for="product-numbersInPack">Кількість одиниць в упаковці:</label>
+        <input type="text" id="product-numbersInPack" placeholder="Кількість одиниць в упаковці">
+
+        <label for="product-expectedProductivity">Планова продуктівність уп/мін:</label>
+        <input type="text" id="product-expectedProductivity" placeholder="Планова продуктівність уп/мін">
+
+        <button id="update-product">Обновить продукт</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/product-update.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+}
+
+#sendMessage {
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    background-color: #fff6cc; /* Более светлый фон */
+    border: 1px solid #d9d9d9; /* Граница */
+    color: #333; /* Цвет текста */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#sendMessage:hover {
+    background-color: #fff176; /* Более темный цвет фона при наведении */
+}
+
+
+#info {
+    position: absolute;
+    right: 70px;
+    font-weight: bold;
+    background-color: #fff6cc; /* Более светлый фон */
+    border: 1px solid #d9d9d9; /* Граница */
+    color: #333; /* Цвет текста */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#info:hover {
+    background-color: #fff176; /* Более темный цвет фона при наведении */
+}
+
+#logout {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#content {
+    padding: 20px;
+}
+
+#machines-list {
+    float: left;
+    width: 50%;
+}
+
+#add-machine-form {
+    float: right;
+    width: 50%;
+}
+
+#machine-list-container {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.edit-button,
+.delete-button {
+    cursor: pointer;
+    background: none;
+    color: black; /* Цвет текста будет черным */
+    border: 1px solid black;
+    padding: 6px 12px; /* Уменьшите размеры кнопок */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px; /* Уменьшите размер шрифта */
+    width: 90%; /* Установите ширину кнопок по вашему усмотрению */
+    box-sizing: border-box; /* Учитывать границы внутри ширины и высоты элемента */
+}
+
+.machine-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-bottom: 2px;
+    align-items: center;
+}
+
+#product-list-container {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.product-item {
+    display: grid;
+    grid-template-columns: 6fr 2fr 2fr 5fr 3fr 3fr;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-bottom: 2px;
+    align-items: center;
+}
+
+.product-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 10px; /* Добавляет небольшой отступ между именем продукта и кнопками */
+}
+
+#products-list {
+    width: 60%;
+}
+
+.production-item {
+    display: grid;
+    grid-template-columns: 3fr 3fr 1fr;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-bottom: 2px;
+    align-items: center;
+}
+
+#productions-list {
+    width: 50%;
+}
+
+.base-stoppage-item {
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-bottom: 2px;
+    align-items: center;
+}
+
+#base-type-list {
+    width: 50%;
+}
+
+.sub-stoppage-item {
+    display: grid;
+    grid-template-columns: 3fr 2fr 1fr 1fr;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-bottom: 2px;
+    align-items: center;
+}
+
+.stoppage-item {
+    display: grid;
+    grid-template-columns: 3fr 3fr 4fr 2fr 4fr 4fr 2fr;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-bottom: 2px;
+    align-items: center;
+}
+
+.stoppage-creation-item {
+    display: grid;
+    grid-template-columns: 3fr 4fr 2fr 2fr;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-bottom: 2px;
+    align-items: center;
+}
+
+#stoppage-list {
+    width: 95%;
+}
+
+#stoppage-creation-list {
+    width: 50%;
+}
+
+#machines-list {
+    width: 30%;
+}
+
+#sub-type-list {
+    width: 60%;
+}
+
+#productInfoTable {
+    border-collapse: collapse;
+    width: 60%;
+    margin-top: 20px;
+}
+
+#productInfoTable th, #productInfoTable td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+#productInfoTable th {
+    background-color: #f2f2f2;
+}

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Виробнича лінія</title>
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+
+<div id="header">
+    <button id="sendMessage">Відправити повідомлення розробнику</button>
+    <button id="home">Головна</button>
+    <button id="production">Виробництво</button>
+    <button id="stoppage">Простої</button>
+    <button id="machines">Обладнання</button>
+    <button id="products">Продукти</button>
+    <button id="charts">Графіки</button>
+    <button id="reports">Звіти</button>
+    <button id="info">Про проект</button>
+    <div id="logout">Logout</div>
+</div>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Відправити повідомлення розробнику</h2>
+        <textarea id="messageInput" rows="4" cols="50"></textarea><br><br>
+        <button id="sendBtn">Відправити</button>
+        <button id="cancelBtn">Відмінити</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="/js/header.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script> <!-- Добавленный адаптер -->
+
+<div>
+    <h2>Продуктивність обладнання в поточному місяці</h2>
+
+    <div>
+        <h5>Оберіть машину:</h5>
+        <select id="machine-name" placeholder="Вибір машини"></select>
+    </div>
+
+    <!-- Таблица для отображения информации -->
+    <table id="productInfoTable">
+        <thead>
+        <tr>
+            <th style="width: 10%; text-align: center;">Колір</th>
+            <th style="width: 40%; text-align: left;">Назва продукту</th>
+            <th style="width: 50%; text-align: left;">Кількість проїзведених упаковок</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- Элемент canvas для отображения графика -->
+    <canvas id="lineChart" width="800" height="300"></canvas>
+</div>
+
+<script>
+    console.log("index.html - start")
+    // Функция для получения списка машин и заполнения выпадающего списка
+    function fillMachineDropdown() {
+        $.ajax({
+            url: "/machine/all",
+            type: "GET",
+            dataType: "json",
+            beforeSend: function(xhr) {
+                var jwtToken = localStorage.getItem("jwtToken");
+                if (jwtToken) {
+                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+                }
+            },
+            success: function (data) {
+                // Очищаем выпадающий список перед обновлением
+                $("#machine-name").empty();
+
+                // Если доступно меньше трех машин, выбираем последнюю из доступных
+                var selectedIndex = Math.min(0, data.length - 1);
+
+                // Добавляем каждую машину в выпадающий список
+                data.forEach(function (machine, index) {
+                    $("#machine-name").append("<option value='" + machine.id + "'" + (index === selectedIndex ? " selected" : "") + ">" + machine.name + "</option>");
+                });
+
+                // Создание объекта StoppageCreateDto после получения списка машин
+                const productivityInHourFilterDto = {
+                    machineId: $("#machine-name").val(),
+                    dateTimeFrom: getStartOfMonth(new Date()),
+                    dateTimeTo: getStartOfMonth(getNextMonth(new Date()))
+                };
+
+                // Отправка POST-запроса на /productivity_in_hour/diagram_all_filtered
+                $.ajax({
+                    url: "/productivity_in_hour/diagram_all_filtered",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(productivityInHourFilterDto),
+                    beforeSend: function(xhr) {
+                        var jwtToken = localStorage.getItem("jwtToken");
+                        if (jwtToken) {
+                            xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+                        }
+                    },
+                    success: function (data) {
+                        // Обработка данных и отображение линейного графика
+                        displayLineChart(data);
+                    },
+                    error: function (xhr) {
+                        if (xhr.status == 401) {
+                            window.location.href = '/login.html';
+                        } else if (xhr.status == 403) {
+                            window.location.href = '/unauthorized.html';
+                        } else {
+                            alert(xhr.responseText);
+                        }
+                    }
+                });
+            },
+            error: function (xhr) {
+                if (xhr.status == 401) {
+                    window.location.href = '/login.html';
+                } else if (xhr.status == 403) {
+                    window.location.href = '/unauthorized.html';
+                } else {
+                    alert(xhr.responseText);
+                }
+            }
+        });
+    }
+
+    // Инициализация страницы
+    fillMachineDropdown();
+
+    $("#machine-name").on("change", function () {
+        // Получение выбранного id машины
+        // var machineId = $(this).val();
+
+        // Создание объекта StoppageCreateDto после получения списка машин
+        const productivityInHourFilterDto = {
+            machineId: $(this).val(),
+            dateTimeFrom: getStartOfMonth(new Date()),
+            dateTimeTo: getStartOfMonth(getNextMonth(new Date()))
+        };
+
+        // Отправка POST-запроса на /productivity_in_hour/diagram_all_filtered
+        $.ajax({
+            url: "/productivity_in_hour/diagram_all_filtered",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(productivityInHourFilterDto),
+            beforeSend: function(xhr) {
+                var jwtToken = localStorage.getItem("jwtToken");
+                if (jwtToken) {
+                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+                }
+            },
+            success: function (data) {
+                // Обработка данных и отображение линейного графика
+                displayLineChart(data);
+            },
+            error: function (xhr) {
+                if (xhr.status == 401) {
+                    window.location.href = '/login.html';
+                } else if (xhr.status == 403) {
+                    window.location.href = '/unauthorized.html';
+                } else {
+                    alert(xhr.responseText);
+                }
+            }
+        });
+
+    });
+
+    // // Создание объекта StoppageCreateDto
+    // const productivityInHourFilterDto = {
+    //     machineId: $("#machine-name").val(),
+    //     dateTimeFrom: getStartOfMonth(new Date()),
+    //     dateTimeTo: getStartOfMonth(getNextMonth(new Date()))
+    // };
+
+    // Функция для получения начала текущего месяца
+    function getStartOfMonth(date) {
+        const startOfMonth = new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1, 0, 0, 0));
+        return startOfMonth.toISOString();
+    }
+
+    // Функция для получения начала следующего месяца
+    function getNextMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 1, 0, 0, 0);
+    }
+
+    // // Отправка POST-запроса на /productivity_in_hour/diagram_all_filtered
+    // $.ajax({
+    //     url: "/productivity_in_hour/diagram_all_filtered",
+    //     type: "POST",
+    //     contentType: "application/json",
+    //     data: JSON.stringify(productivityInHourFilterDto),
+    //     success: function (data) {
+    //         // Обработка данных и отображение линейного графика
+    //         displayLineChart(data);
+    //     },
+    //     error: function () {
+    //         alert("Ошибка при получении данных для графика");
+    //     }
+    // });
+
+    var myChart;
+
+    function displayLineChart(data) {
+        var colorMap = {}; // Сохранение цветов для каждого productName
+
+        var resultdata = {
+            datasets: []
+        };
+
+        var sumMap = {}; // Сохранение сумм prodInHours для каждого productName
+        var colorMap = {}; // Сохранение цветов для каждого productName
+
+        data.forEach(function (entry) {
+            if (!sumMap[entry.productName]) {
+                sumMap[entry.productName] = 0;
+            }
+
+            if (!colorMap[entry.productName]) {
+                colorMap[entry.productName] = getRandomColor();
+            }
+
+            entry.prodInHours.forEach(function (value) {
+                sumMap[entry.productName] += value;
+            });
+
+            var dataset = {
+                label: entry.productName,
+                borderColor: colorMap[entry.productName],
+                data: [],
+            };
+
+            var i = 0;
+
+            entry.dateTimes.forEach(function (dateTime) {
+                dataset.data.push({
+                    x: dateTime,
+                    y: entry.prodInHours[i]
+                });
+                i++;
+            });
+
+            resultdata.datasets.push(dataset);
+        });
+
+        var ctx = document.getElementById('lineChart').getContext('2d');
+
+        if (myChart) {
+            myChart.destroy();
+        }
+
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: resultdata,
+            options: {
+                scales: {
+                    x: {
+                        type: 'time', // Используем тип 'time' для времени
+                        time: {
+                            parser: 'YYYY-MM-DD HH:mm', // Укажите формат времени
+                            unit: 'hour',
+                            displayFormats: {
+                                hour: 'MM-DD HH:mm',
+                            },
+                        },
+                        title: {
+                            display: true,
+                            text: 'Время',
+                        },
+                    },
+                    y: {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Продуктивність в годину',
+                        },
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: false, // Отключение отображения лейблов в заголовке графика
+                    },
+                },
+            },
+        });
+
+        // Добавление информации в таблицу
+        var productInfoTableBody = document.querySelector('#productInfoTable tbody');
+        productInfoTableBody.innerHTML = '';
+
+        Object.keys(sumMap).forEach(function (productName) {
+            var tableRow = document.createElement('tr');
+            tableRow.innerHTML = `
+                <td><span style="color: ${colorMap[productName]}">■</span></td>
+                <td>${productName}</td>
+                <td>${sumMap[productName]} уп.</td>
+            `;
+            productInfoTableBody.appendChild(tableRow);
+        });
+    }
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+</script>
+</body>
+</html>
